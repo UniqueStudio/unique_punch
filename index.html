@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-cmn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>UniqueStudio Punch</title>
+  <style>
+    .drag-area-wrapper>h2 {
+      text-align: center
+    }
+
+    .drag-area {
+      width: 200px;
+      height: 200px;
+      border-radius: 10px;
+      border: #b1b1b1 dashed 4px;
+      background-color: #73c991;
+      background-color: #f1cf51;
+
+      transition: background 500ms;
+    }
+
+    .wrapper {
+      width: 70%;
+      margin: auto;
+      display: flex;
+      justify-content: center
+    }
+
+    .drag-placeholder {
+      width: 100px;
+    }
+
+    .title {
+      text-align: center
+    }
+
+    .status {
+      font-size: 50px;
+      line-height: 200px;
+      color: #fff;
+      text-align: center;
+    }
+
+    #download:disabled {
+      background-color: #b1b1b1
+    }
+
+    #download:active {
+      background-color: #007acc99
+    }
+
+    #download {
+      border-radius: 10px;
+      background-color: #007acc;
+      margin: 40px 20px 0;
+      display: block;
+      border: none;
+
+      height: 50px;
+      width: 180px;
+
+      color: #fff;
+
+      font-size: 20px;
+
+      outline: none
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="title">考勤“公开处刑”生成器</h1>
+  <div class="wrapper">
+    <div class="drag-area-wrapper">
+      <h2>上传打卡数据表</h2>
+      <div id="punch-data" class="drag-area">
+        <div id="punch-data-ok" class="status">?</div>
+      </div>
+    </div>
+    <div class="drag-placeholder"></div>
+    <div class="drag-area-wrapper">
+      <h2>上传微信通讯录</h2>
+      <div id="weixin-data" class="drag-area">
+        <div id="punch-data-ok" class="status">?</div>
+      </div>
+    </div>
+  </div>
+  <div class="wrapper">
+    <button disabled id="download">下载“公开处刑”</button>
+  </div>
+  <script src="./src/index.ts"></script>
+</body>
+
+</html>

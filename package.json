@@ -1,0 +1,15 @@
+{
+  "name": "unique_punch",
+  "version": "0.0.1",
+  "description": "UniqueStudio punch wall generator.",
+  "main": "index.js",
+  "author": "Faraway <hzylovelyl@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "xlsx": "^0.14.0"
+  },
+  "devDependencies": {
+    "@types/xlsx": "^0.0.36",
+    "typescript": "^3.0.3"
+  }
+}
