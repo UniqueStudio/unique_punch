@@ -99,7 +99,7 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
   weixinDatas.forEach(weixinData => {
     if (allMap[weixinData.name]) {
       allMap[weixinData.name].group = weixinData.group.filter(
-        g => g !== "UniqueStudio"
+        g => g !== "联创团队"
       );
     }
   });
@@ -147,13 +147,13 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
 
   ctx.fillStyle = "#fff";
   ctx.font = "100px Consolas";
-  ctx.fillText("打卡公开处刑", 20, 20);
+  ctx.fillText("打卡公开处刑 0924-0930", 20, 20);
 
   ctx.font = "50px Consolas";
   r1.forEach((p, i) => {
     const name = p.name.padEnd(10, "　");
     const group = (p.group.length > 0
-      ? p.group.map((g: string) => g.replace(/UniqueStudio\//g, "")).join(",")
+      ? p.group.map((g: string) => g.replace(/联创团队\//g, "")).join(",")
       : "???"
     ).padEnd(10, " ");
     const time = p.time
@@ -170,7 +170,7 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
   r2.forEach((p, i) => {
     const name = p.name.padEnd(10, "　");
     const group = (p.group.length > 0
-      ? p.group.map((g: string) => g.replace(/UniqueStudio\//g, "")).join(",")
+      ? p.group.map((g: string) => g.replace(/联创团队\//g, "")).join(",")
       : "???"
     ).padEnd(10, " ");
     const time = p.time
