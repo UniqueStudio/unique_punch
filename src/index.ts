@@ -1,6 +1,9 @@
 import XLSX from "xlsx";
+import { resolve } from "path";
+import axios from "axios";
+import { readFileSync, existsSync, statSync, writeFileSync } from "fs";
+
 import handlePunchData from "./utils/processPunchData";
-import handleWeixinData from "./utils/processWeixin";
 
 type PunchData = Array<{
   name: string;
@@ -12,79 +15,79 @@ type WeixinData = Array<{
   group: string[];
 }>;
 
-let punchData: null | PunchData = null;
-let weixinData: null | WeixinData = null;
-let downloadData: null | Blob = null;
+// let punchData: null | PunchData = null;
+// let weixinData: null | WeixinData = null;
+// let downloadData: null | Blob = null;
 
-const punchDataEle = document.getElementById("punch-data")!;
-punchDataEle.addEventListener("dragover", function(event) {
-  event.preventDefault();
-});
+// const punchDataEle = document.getElementById("punch-data")!;
+// punchDataEle.addEventListener("dragover", function(event) {
+//   event.preventDefault();
+// });
 
-punchDataEle.addEventListener(
-  "drop",
-  e => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (punchData) {
-      return;
-    }
-    const files = e.dataTransfer.files;
-    const f = files[0];
-    const reader = new FileReader();
+// punchDataEle.addEventListener(
+//   "drop",
+//   e => {
+//     e.stopPropagation();
+//     e.preventDefault();
+//     if (punchData) {
+//       return;
+//     }
+//     const files = e.dataTransfer.files;
+//     const f = files[0];
+//     const reader = new FileReader();
 
-    reader.readAsBinaryString(f);
-    reader.addEventListener("load", function(e) {
-      const data = (e as any).target.result;
-      const workbook = XLSX.read(data, { type: "binary" });
+//     reader.readAsBinaryString(f);
+//     reader.addEventListener("load", function(e) {
+//       const data = (e as any).target.result;
+//       const workbook = XLSX.read(data, { type: "binary" });
 
-      punchData = handlePunchData(workbook);
-      punchDataEle.setAttribute("style", "background-color: #73c991");
+//       punchData = handlePunchData(workbook);
+//       punchDataEle.setAttribute("style", "background-color: #73c991");
 
-      const statusNode = punchDataEle.querySelector("div")!;
-      statusNode.innerHTML = "✓";
-      if (weixinData) {
-        gen(punchData, weixinData);
-      }
-    });
-  },
-  false
-);
+//       const statusNode = punchDataEle.querySelector("div")!;
+//       statusNode.innerHTML = "✓";
+//       if (weixinData) {
+//         gen(punchData, weixinData);
+//       }
+//     });
+//   },
+//   false
+// );
 
-const weixinDataEle = document.getElementById("weixin-data")!;
-weixinDataEle.addEventListener("dragover", function(event) {
-  event.preventDefault();
-});
+// const weixinDataEle = document.getElementById("weixin-data")!;
+// weixinDataEle.addEventListener("dragover", function(event) {
+//   event.preventDefault();
+// });
 
-weixinDataEle.addEventListener(
-  "drop",
-  e => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (weixinData) {
-      return;
-    }
-    const files = e.dataTransfer.files;
-    const f = files[0];
-    const reader = new FileReader();
+// weixinDataEle.addEventListener(
+//   "drop",
+//   e => {
+//     e.stopPropagation();
+//     e.preventDefault();
+//     if (weixinData) {
+//       return;
+//     }
+//     const files = e.dataTransfer.files;
+//     const f = files[0];
+//     const reader = new FileReader();
 
-    reader.readAsBinaryString(f);
-    reader.addEventListener("load", function(e) {
-      const data = (e as any).target.result;
-      const workbook = XLSX.read(data, { type: "binary" });
+//     reader.readAsBinaryString(f);
+//     reader.addEventListener("load", function(e) {
+//       const data = (e as any).target.result;
+//       const workbook = XLSX.read(data, { type: "binary" });
 
-      weixinData = handleWeixinData(workbook);
-      weixinDataEle.setAttribute("style", "background-color: #73c991");
+//       weixinData = handleWeixinData(workbook);
+//       weixinDataEle.setAttribute("style", "background-color: #73c991");
 
-      const statusNode = weixinDataEle.querySelector("div")!;
-      statusNode.innerHTML = "✓";
-      if (punchData) {
-        gen(punchData, weixinData);
-      }
-    });
-  },
-  false
-);
+//       const statusNode = weixinDataEle.querySelector("div")!;
+//       statusNode.innerHTML = "✓";
+//       if (punchData) {
+//         gen(punchData, weixinData);
+//       }
+//     });
+//   },
+//   false
+// );
 
 function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
   const allMap: { [k: string]: any } = punchDatas.reduce((p, punchData) => {
@@ -133,11 +136,16 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
   const lineHeight = 60;
   const headHeight = 140;
 
-  const canvas = document.createElement("canvas");
+  var Canvas = require("canvas"),
+    canvas = new Canvas(200, 200),
+    ctx = canvas.getContext("2d");
+  // Canvas.registerFont(
+  //   resolve(__dirname, "./assets/font.ttc"),
+  //   "WenQuanYiZenHeiMono"
+  // );
+
   canvas.width = 2400;
   canvas.height = Math.max(greenCount, redCount) * lineHeight + headHeight + 80;
-
-  const ctx = canvas.getContext("2d")!;
 
   ctx.fillStyle = "#272822";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -146,10 +154,10 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
   ctx.textBaseline = "top";
 
   ctx.fillStyle = "#fff";
-  ctx.font = "100px Consolas";
+  ctx.font = '100px "WenQuanYi Zen Hei Mono"';
   ctx.fillText("打卡公开处刑 0924-0930", 20, 20);
 
-  ctx.font = "50px Consolas";
+  ctx.font = '50px "WenQuanYi Zen Hei Mono"';
   r1.forEach((p, i) => {
     const name = p.name.padEnd(10, "　");
     const group = (p.group.length > 0
@@ -188,27 +196,112 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
     );
   });
 
-  canvas.toBlob(b => {
-    downloadData = b;
-    document.getElementById("download")!.removeAttribute("disabled");
-  });
+  const buf = canvas.toBuffer();
+  writeFileSync(resolve(process.cwd(), "./公开处刑.png"), buf);
 }
 
-document.getElementById("download")!.addEventListener("click", () => {
-  if (downloadData) {
-    saveData(downloadData, "公开处刑.png");
-  }
-});
+// document.getElementById("download")!.addEventListener("click", () => {
+//   if (downloadData) {
+//     saveData(downloadData, "公开处刑.png");
+//   }
+// });
 
-const saveData = (function() {
-  var a = document.createElement("a");
-  document.body.appendChild(a);
-  a.setAttribute("style", "display: none");
-  return function(data: Blob, fileName: string) {
-    const url = window.URL.createObjectURL(data);
-    a.href = url;
-    a.download = fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
+// const saveData = (function() {
+//   var a = document.createElement("a");
+//   document.body.appendChild(a);
+//   a.setAttribute("style", "display: none");
+//   return function(data: Blob, fileName: string) {
+//     const url = window.URL.createObjectURL(data);
+//     a.href = url;
+//     a.download = fileName;
+//     a.click();
+//     window.URL.revokeObjectURL(url);
+//   };
+// })();
+(async function() {
+  const corpid = "ww6879e683e04c1e57";
+  const corpsecret = "Ux8WkjToajxemahheZkNfxw5jPIXsilEjtACHBNCxjE";
+  const [, , p] = process.argv;
+  const path = resolve(process.cwd(), p);
+  if (!existsSync(path) || !statSync(path).isFile) {
+    console.log("❌  File not exists!");
+    process.exit(0);
+  }
+  const data = readFileSync(path, { encoding: "binary" });
+  const punchData = handlePunchData(XLSX.read(data, { type: "binary" }));
+  const accessToken = await axios
+    .get(
+      `https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${corpid}&corpsecret=${corpsecret}`
+    )
+    .then(
+      ({ status, data }) =>
+        new Promise((resolve, reject) => {
+          if (status === 200) {
+            const { access_token: accessToken } = data;
+            return resolve(accessToken);
+          } else {
+            return reject(new Error("Fail to Get Access Token!"));
+          }
+        })
+    );
+
+  const department = await axios
+    .get(
+      `https://qyapi.weixin.qq.com/cgi-bin/department/list?access_token=${accessToken}`
+    )
+    .then<any[]>(
+      ({ status, data }) =>
+        new Promise((resolve, reject) => {
+          if (status === 200) {
+            const { department } = data;
+            return resolve(
+              department.reduce((p: any, d: any) => {
+                return {
+                  ...p,
+                  [d.id]: d
+                };
+              }, {})
+            );
+          } else {
+            return reject(new Error("Fail to Get Departments!"));
+          }
+        })
+    );
+
+  const rootId = department[1].id;
+
+  const rawUser = await axios
+    .get(
+      `https://qyapi.weixin.qq.com/cgi-bin/user/list?access_token=${accessToken}&department_id=${rootId}&fetch_child=1`
+    )
+    .then<any[]>(
+      ({ status, data }) =>
+        new Promise((resolve, reject) => {
+          if (status === 200) {
+            const { userlist } = data;
+            return resolve(userlist);
+          } else {
+            return reject(new Error("Fail to Get Users!"));
+          }
+        })
+    );
+
+  const weixinData = rawUser.map(
+    ({ name, department: d }: { name: string; department: number[] }) => ({
+      name,
+      group: d.map(n => getDepartmentName(n))
+    })
+  );
+
+  gen(punchData, weixinData);
+
+  function getDepartmentName(id: number) {
+    const departments = [];
+    do {
+      departments.unshift(department[id].name);
+      id = department[id].parentid;
+    } while (id);
+
+    return departments.join("/");
+  }
 })();

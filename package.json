@@ -6,10 +6,16 @@
   "author": "Faraway <hzylovelyl@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^10.11.4",
+    "axios": "^0.18.0",
+    "canvas": "^1.6.12",
     "xlsx": "^0.14.0"
   },
   "devDependencies": {
     "@types/xlsx": "^0.0.36",
     "typescript": "^3.0.3"
+  },
+  "scripts": {
+    "start": "ts-node ./src/index.ts"
   }
 }
