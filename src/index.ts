@@ -227,8 +227,8 @@ function gen(
 //   };
 // })();
 (async function() {
-  const corpid = "ww6879e683e04c1e57";
-  const corpsecret = "Ux8WkjToajxemahheZkNfxw5jPIXsilEjtACHBNCxjE";
+  const corpid = "-_-";
+  const corpsecret = "*__*";
   const [, , p] = process.argv;
   const path = resolve(process.cwd(), p);
   if (!existsSync(path) || !statSync(path).isFile) {
