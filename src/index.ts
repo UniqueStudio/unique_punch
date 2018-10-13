@@ -15,80 +15,6 @@ type WeixinData = Array<{
   group: string[];
 }>;
 
-// let punchData: null | PunchData = null;
-// let weixinData: null | WeixinData = null;
-// let downloadData: null | Blob = null;
-
-// const punchDataEle = document.getElementById("punch-data")!;
-// punchDataEle.addEventListener("dragover", function(event) {
-//   event.preventDefault();
-// });
-
-// punchDataEle.addEventListener(
-//   "drop",
-//   e => {
-//     e.stopPropagation();
-//     e.preventDefault();
-//     if (punchData) {
-//       return;
-//     }
-//     const files = e.dataTransfer.files;
-//     const f = files[0];
-//     const reader = new FileReader();
-
-//     reader.readAsBinaryString(f);
-//     reader.addEventListener("load", function(e) {
-//       const data = (e as any).target.result;
-//       const workbook = XLSX.read(data, { type: "binary" });
-
-//       punchData = handlePunchData(workbook);
-//       punchDataEle.setAttribute("style", "background-color: #73c991");
-
-//       const statusNode = punchDataEle.querySelector("div")!;
-//       statusNode.innerHTML = "✓";
-//       if (weixinData) {
-//         gen(punchData, weixinData);
-//       }
-//     });
-//   },
-//   false
-// );
-
-// const weixinDataEle = document.getElementById("weixin-data")!;
-// weixinDataEle.addEventListener("dragover", function(event) {
-//   event.preventDefault();
-// });
-
-// weixinDataEle.addEventListener(
-//   "drop",
-//   e => {
-//     e.stopPropagation();
-//     e.preventDefault();
-//     if (weixinData) {
-//       return;
-//     }
-//     const files = e.dataTransfer.files;
-//     const f = files[0];
-//     const reader = new FileReader();
-
-//     reader.readAsBinaryString(f);
-//     reader.addEventListener("load", function(e) {
-//       const data = (e as any).target.result;
-//       const workbook = XLSX.read(data, { type: "binary" });
-
-//       weixinData = handleWeixinData(workbook);
-//       weixinDataEle.setAttribute("style", "background-color: #73c991");
-
-//       const statusNode = weixinDataEle.querySelector("div")!;
-//       statusNode.innerHTML = "✓";
-//       if (punchData) {
-//         gen(punchData, weixinData);
-//       }
-//     });
-//   },
-//   false
-// );
-
 function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
   const allMap: { [k: string]: any } = punchDatas.reduce((p, punchData) => {
     return {
@@ -200,24 +126,6 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
   writeFileSync(resolve("/data/unique_punch/公开处刑.png"), buf);
 }
 
-// document.getElementById("download")!.addEventListener("click", () => {
-//   if (downloadData) {
-//     saveData(downloadData, "公开处刑.png");
-//   }
-// });
-
-// const saveData = (function() {
-//   var a = document.createElement("a");
-//   document.body.appendChild(a);
-//   a.setAttribute("style", "display: none");
-//   return function(data: Blob, fileName: string) {
-//     const url = window.URL.createObjectURL(data);
-//     a.href = url;
-//     a.download = fileName;
-//     a.click();
-//     window.URL.revokeObjectURL(url);
-//   };
-// })();
 (async function() {
   const corpid = process.env["CORPID"];
   const corpsecret = process.env["CORPSECRET"];
