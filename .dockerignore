@@ -1,7 +1,8 @@
 node_modules/
-dist/
 .cache/
-test.http
 考勤报表.xls
 公开处刑.png
+test.http
+*.log
+
 .DS_Store

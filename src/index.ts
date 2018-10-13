@@ -155,7 +155,7 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
 
   ctx.fillStyle = "#fff";
   ctx.font = '100px "WenQuanYi Zen Hei Mono"';
-  ctx.fillText("打卡公开处刑 0924-0930", 20, 20);
+  ctx.fillText(`打卡公开处刑 ${process.argv[2]}`, 20, 20);
 
   ctx.font = '50px "WenQuanYi Zen Hei Mono"';
   r1.forEach((p, i) => {
@@ -197,7 +197,7 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
   });
 
   const buf = canvas.toBuffer();
-  writeFileSync(resolve(process.cwd(), "./公开处刑.png"), buf);
+  writeFileSync(resolve("/data/unique_punch/公开处刑.png"), buf);
 }
 
 // document.getElementById("download")!.addEventListener("click", () => {
@@ -219,12 +219,21 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
 //   };
 // })();
 (async function() {
-  const corpid = "ww6879e683e04c1e57";
-  const corpsecret = "Ux8WkjToajxemahheZkNfxw5jPIXsilEjtACHBNCxjE";
-  const [, , p] = process.argv;
-  const path = resolve(process.cwd(), p);
+  // const corpid = "ww6879e683e04c1e57";
+  const corpid = process.env["CORPID"];
+  // const corpsecret = "Ux8WkjToajxemahheZkNfxw5jPIXsilEjtACHBNCxjE";
+  const corpsecret = process.env["CORPSECRET"];
+
+  if (!corpid || !corpsecret) {
+    console.error(
+      "❌  Environment vairables `CORPID` and `CORPSECRET` are not defined!"
+    );
+  }
+
+  // const [, , p] = process.argv;
+  const path = "/data/unique_punch/考勤报表.xls";
   if (!existsSync(path) || !statSync(path).isFile) {
-    console.log("❌  File not exists!");
+    console.error(`❌  File not exists: ${path}`);
     process.exit(0);
   }
   const data = readFileSync(path, { encoding: "binary" });
