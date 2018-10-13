@@ -159,7 +159,11 @@ function gen(
 
   ctx.fillStyle = "#fff";
   ctx.font = '100px "WenQuanYi Zen Hei Mono"';
-  ctx.fillText(`打卡公开处刑 ${dateRange}`, 20, 20);
+  ctx.fillText(
+    `打卡公开处刑 ${dateRange.replace(/ /g, "").replace("~", " - ")}`,
+    20,
+    20
+  );
 
   ctx.font = '50px "WenQuanYi Zen Hei Mono"';
   r1.forEach((p, i) => {
