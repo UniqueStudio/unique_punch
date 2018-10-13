@@ -5,3 +5,5 @@ test.http
 考勤报表.xls
 公开处刑.png
 .DS_Store
+
+*.log
