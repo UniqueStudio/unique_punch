@@ -219,9 +219,7 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
 //   };
 // })();
 (async function() {
-  // const corpid = "ww6879e683e04c1e57";
   const corpid = process.env["CORPID"];
-  // const corpsecret = "Ux8WkjToajxemahheZkNfxw5jPIXsilEjtACHBNCxjE";
   const corpsecret = process.env["CORPSECRET"];
 
   if (!corpid || !corpsecret) {
