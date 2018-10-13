@@ -8,4 +8,3 @@ RUN fc-cache -f -v
 
 RUN yarn
 ENTRYPOINT ["yarn", "ts-node", "./src/index.ts"]
-CMD ["{{Date Range}}"]
