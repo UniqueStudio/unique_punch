@@ -15,7 +15,11 @@ type WeixinData = Array<{
   group: string[];
 }>;
 
-function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
+function gen(
+  punchDatas: PunchData,
+  weixinDatas: WeixinData,
+  dateRange: string
+) {
   const allMap: { [k: string]: any } = punchDatas.reduce((p, punchData) => {
     return {
       ...p,
@@ -81,7 +85,11 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
 
   ctx.fillStyle = "#fff";
   ctx.font = '100px "WenQuanYi Zen Hei Mono"';
-  ctx.fillText(`打卡公开处刑 ${process.argv[2]}`, 20, 20);
+  ctx.fillText(
+    `打卡公开处刑 ${dateRange.replace(/ /g, "").replace("~", " - ")}`,
+    20,
+    20
+  );
 
   ctx.font = '50px "WenQuanYi Zen Hei Mono"';
   r1.forEach((p, i) => {
@@ -208,7 +216,11 @@ function gen(punchDatas: PunchData, weixinDatas: WeixinData) {
     })
   );
 
-  gen(punchData, weixinData);
+  gen(
+    punchData,
+    weixinData,
+    XLSX.read(data, { type: "binary" }).Props!.Comments!
+  );
 
   function getDepartmentName(id: number) {
     const departments = [];
